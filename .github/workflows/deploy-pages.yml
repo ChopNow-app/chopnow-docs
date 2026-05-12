@@ -29,7 +29,7 @@ jobs:
       - name: Install MkDocs Material
         run: |
           pip install --upgrade pip
-          pip install "mkdocs-material>=9.5"
+          pip install -r requirements.txt
 
       - name: Build site
         run: mkdocs build --strict

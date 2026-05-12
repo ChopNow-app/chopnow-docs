@@ -1,0 +1,10 @@
+# MkDocs Material toolchain. Pinned to the major versions that work with the
+# `pymdownx.superfences` mermaid wiring in mkdocs.yml.
+#
+# Local preview:
+#   pip install -r requirements.txt
+#   mkdocs serve
+#
+# CI installs the same file (see .github/workflows/deploy-pages.yml).
+
+mkdocs-material>=9.5,<10
