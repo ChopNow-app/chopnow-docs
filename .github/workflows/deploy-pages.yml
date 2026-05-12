@@ -10,6 +10,13 @@ permissions:
   pages: write
   id-token: write
 
+# Opt every JS action into Node 24 ahead of GitHub's June 2, 2026 forced
+# migration. Removes the deprecation warning emitted by checkout@v4,
+# configure-pages@v5, setup-python@v5, upload-pages-artifact@v3,
+# deploy-pages@v4. Drop this line once those actions ship Node 24 builds.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 # Allow one in-flight publish at a time. Newer pushes cancel older ones.
 concurrency:
   group: pages
