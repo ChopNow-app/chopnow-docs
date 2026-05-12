@@ -1,0 +1,13 @@
+# mkdocs build output
+site/
+
+# Python venv (if dev preview is run locally)
+.venv/
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,107 @@
+site_name: ChopNow Docs
+site_description: Technical documentation for the ChopNow platform — architecture, decisions, runbooks, onboarding.
+site_url: https://chopnow-app.github.io/chopnow-docs/
+repo_url: https://github.com/ChopNow-app/chopnow-docs
+repo_name: ChopNow-app/chopnow-docs
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant       # SPA-style page loads
+    - navigation.tracking      # update URL on scroll
+    - navigation.tabs          # top-level sections as tabs
+    - navigation.sections      # sub-sections in the sidebar
+    - navigation.indexes       # section landing pages
+    - navigation.top           # back-to-top button
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy        # copy-button on every code block
+    - content.action.edit      # "edit on GitHub" link per page
+    - content.tabs.link        # tab choices persist across pages
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Plus Jakarta Sans
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition                # note/warning/tip boxes
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details          # collapsible blocks
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ChopNow-app
+
+nav:
+  - Home: index.md
+  - Getting started:
+    - getting-started/overview.md
+    - For developers: getting-started/onboarding-dev.md
+    - For operators: getting-started/onboarding-non-dev.md
+  - Architecture:
+    - architecture/overview.md
+    - Stack: architecture/stack.md
+    - Infrastructure: architecture/infrastructure.md
+    - Data model: architecture/data-model.md
+    - Security: architecture/security.md
+  - Decisions (ADRs):
+    - decisions/index.md
+    - "ADR-0001 PWA, not React Native": decisions/0001-pwa-not-react-native.md
+    - "ADR-0002 Twilio, not Africa's Talking": decisions/0002-twilio-not-africas-talking.md
+    - "ADR-0003 Hetzner, not AWS": decisions/0003-hetzner-not-aws.md
+    - "ADR-0004 arm64 prod, amd64 staging": decisions/0004-arm64-prod-amd64-staging.md
+    - Template: decisions/template.md
+  - Runbooks:
+    - runbooks/index.md
+    - Deploy to staging: runbooks/deploy-staging.md
+    - Rollback: runbooks/rollback.md
+    - Re-join Twilio sandbox: runbooks/twilio-sandbox-rejoin.md
+    - Rotate DO API token: runbooks/rotate-do-token.md
+  - Reference:
+    - Repositories: reference/repositories.md
+    - Environments: reference/environments.md
+    - Glossary: reference/glossary.md
