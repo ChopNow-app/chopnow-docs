@@ -94,7 +94,7 @@ model VendorPenalty {
 }
 ```
 
-Until the Finance module ships (Story 7.x), penalty rows are bookkeeping only — admin can review them but they don't yet deduct from MoMo payouts automatically. The `event:pre_order_refund_required` log surfaces orders that need manual Campay refund processing while Story 3.8 (Campay refund API) is pending.
+Each penalty row is paired with two `LedgerEntry` writes inside the same DB transaction ([ADR-0005](../decisions/0005-payout-architecture.md)) — one debiting `VENDOR_PAYABLE` by the penalty amount, one crediting `PLATFORM_REVENUE` by the same amount. The penalty's `id` is the ledger `eventId`, so the two systems stay traceable. If the ledger write fails the entire cancellation rolls back: no penalty row, no order status change, no consumer refund message. This is the bridge between today's bookkeeping-only `VendorPenalty.settledAt` field and the Finance module's payout cron (S2), which reads `VENDOR_PAYABLE` from the ledger directly. The `event:pre_order_refund_required` log surfaces orders that need manual Campay refund processing while Story 3.8 (Campay refund API) is pending.
 
 ## Vendor surface
 
