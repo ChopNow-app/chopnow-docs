@@ -88,6 +88,16 @@ nav:
     - Infrastructure: architecture/infrastructure.md
     - Data model: architecture/data-model.md
     - Security: architecture/security.md
+  - Vendor surface:
+    - vendor/index.md
+    - Onboarding & KYC: vendor/onboarding.md
+    - Self-service surfaces: vendor/self-service.md
+    - Order lifecycle: vendor/order-lifecycle.md
+    - Notifications: vendor/notifications.md
+    - Concurrency model: vendor/concurrency.md
+    - Data model: vendor/data-model.md
+    - API reference: vendor/api-reference.md
+    - Operational telemetry: vendor/operational.md
   - Decisions (ADRs):
     - decisions/index.md
     - "ADR-0001 PWA, not React Native": decisions/0001-pwa-not-react-native.md
