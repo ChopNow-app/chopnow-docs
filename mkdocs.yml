@@ -93,6 +93,7 @@ nav:
     - Onboarding & KYC: vendor/onboarding.md
     - Self-service surfaces: vendor/self-service.md
     - Order lifecycle: vendor/order-lifecycle.md
+    - Pre-orders: vendor/pre-orders.md
     - Notifications: vendor/notifications.md
     - Concurrency model: vendor/concurrency.md
     - Data model: vendor/data-model.md
