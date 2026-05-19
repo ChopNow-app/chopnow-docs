@@ -105,6 +105,7 @@ nav:
     - "ADR-0002 Twilio, not Africa's Talking": decisions/0002-twilio-not-africas-talking.md
     - "ADR-0003 Hetzner, not AWS": decisions/0003-hetzner-not-aws.md
     - "ADR-0004 arm64 prod, amd64 staging": decisions/0004-arm64-prod-amd64-staging.md
+    - "ADR-0005 Hybrid payouts, ledger-first finance": decisions/0005-payout-architecture.md
     - Template: decisions/template.md
   - Runbooks:
     - runbooks/index.md
