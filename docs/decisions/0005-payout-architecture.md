@@ -227,18 +227,39 @@ These remain in the backlog but are downstream of getting the foundation right:
 
 ## Follow-ups
 
-These are the issues we file as the **S1 Finance Foundation** milestone on chopnow-api:
+### ✅ S1 Finance Foundation — shipped 2026-05-19
 
-- **`[7.0a]` Ledger schema** — new Prisma migration: `LedgerEntry`, `VendorPayout`, `RiderPayout`. Append-only convention in service layer. No consumers yet.
-- **`[7.0b]` Per-order commission snapshot + type-aware default** — Order gains `commissionRate`, `commissionXAF`, `riderShareXAF`, `platformFeeXAF`. `vendor.service.ts:submit` sets `commissionRate` from `VendorType` (0.06 / 0.10 / 0.17). Backfill migration sets existing INFORMAL vendors to 0.06.
-- **`[7.0c]` VendorPenalty → LedgerEntry migration** — refactor [`VendorPenalty`](../vendor/pre-orders.md) cancel-after-accept flow to also write a paired `LedgerEntry` (debit VENDOR_PAYABLE, credit PLATFORM_RESERVE). Bridges today's sketch to tomorrow's source of truth.
+- **`[7.0a]`** Ledger schema — `LedgerEntry`, `VendorPayout`, `RiderPayout`, append-only convention enforced by `LedgerService.recordTransaction`. ([chopnow-api#195](https://github.com/ChopNow-app/chopnow-api/pull/195))
+- **`[7.0b]`** Per-order commission snapshot + type-aware default. Fixed the latent INFORMAL over-charge bug; existing rows backfilled to 0.06. ([chopnow-api#196](https://github.com/ChopNow-app/chopnow-api/pull/196))
+- **`[7.0c]`** VendorPenalty → LedgerEntry bridge. Pre-order vendor-cancel-after-accept now writes paired `VENDOR_PAYABLE +` / `PLATFORM_REVENUE −` entries inside the same Prisma transaction as `VendorPenalty.create`. ([chopnow-api#197](https://github.com/ChopNow-app/chopnow-api/pull/197))
 
-Subsequent milestones, in order:
+### ✅ S2 Finance Operations — shipped 2026-05-20
 
-- **S2 Finance** — admin financial dashboard (read-only views: vendor balances, rider balances, refund queue, MoMo mismatch), Sunday 02:00 weekly payout cron for formal vendors, admin-triggered "verser maintenant" for informal vendors, daily 06:00 rider batch, negative-balance refusal rule.
-- **S3 Finance** — Campay refund API integration (closes [#90](https://github.com/ChopNow-app/chopnow-api/issues/90) 7.10), failed payout retry + ops escalation (closes [#85](https://github.com/ChopNow-app/chopnow-api/issues/85) 7.5), webhook idempotency hardening (closes [#88](https://github.com/ChopNow-app/chopnow-api/issues/88) 7.8).
+Backend (chopnow-api):
 
-Documentation:
+- **`[7.1a]`** Money-flow ledger writes — `onPaymentSucceeded` (CAMPAY_FLOAT / CUSTOMER_ESCROW) and `markDelivered` (CUSTOMER_ESCROW / VENDOR_PAYABLE / RIDER_PAYABLE / PLATFORM_REVENUE). Every order now leaves 6 ledger rows summing to zero. ([chopnow-api#207](https://github.com/ChopNow-app/chopnow-api/pull/207))
+- **`[7.1c]`** `GET /admin/vendors/:id/balance` — signed balance + component breakdown + isTrusted flag. ([chopnow-api#208](https://github.com/ChopNow-app/chopnow-api/pull/208))
+- **`[7.1d]`** `GET /admin/riders/:id/balance` — same shape for riders, simpler (no commission/penalty). ([chopnow-api#209](https://github.com/ChopNow-app/chopnow-api/pull/209))
+- **`[7.1e]`** Admin financial dashboard backend lists — `vendor-balances`, `rider-balances`, `refund-queue`, paginated. ([chopnow-api#210](https://github.com/ChopNow-app/chopnow-api/pull/210))
+- **`[7.2a]`** Sunday 02:00 weekly vendor payout cron for SEMI_FORMAL + RESTAURANT. Idempotent on `(vendorId, periodStart)`. Folds in the **`[7.3a]`** negative-balance refusal rule (skip when `pendingRefunds > 0`). ([chopnow-api#211](https://github.com/ChopNow-app/chopnow-api/pull/211))
+- **`[7.2c]`** Daily 06:00 rider payout batch. Same shape, no commission/penalty/dispute leg. ([chopnow-api#212](https://github.com/ChopNow-app/chopnow-api/pull/212))
+- **`[7.2d]`** KYC defense-in-depth on rider payouts — refuse if `idCardPhotoUrl OR selfiePhotoUrl IS NULL`, regardless of `RiderStatus`. ([chopnow-api#214](https://github.com/ChopNow-app/chopnow-api/pull/214))
+- **`[7.2b]`** INFORMAL on-demand cashout — `POST /vendors/me/cashout-request` (vendor) + `POST /admin/finance/cashout-requests/:id/approve|reject` (admin). New `VendorCashoutRequest` table; v1 admin-gated, self-service flip deferred until first ~100 transfers prove the patterns. ([chopnow-api#215](https://github.com/ChopNow-app/chopnow-api/pull/215))
 
-- Add `docs/finance/` section with `ledger.md`, `payouts.md`, `commission.md` after S1 lands so the ops team and future contributors have a single place to learn the model.
-- Update `docs/vendor/pre-orders.md` to point `VendorPenalty.settledAt` at the ledger entry once S1 lands.
+Frontend (chopnow-app):
+
+- **`[7.3b]`** Admin financial dashboard at `/admin/finance` — four tabs (cashout requests, vendor balances, rider balances, refund queue). Inline approve/reject on the cashout queue with trust badges. ([chopnow-app#138](https://github.com/ChopNow-app/chopnow-app/pull/138))
+
+### Remaining for S3 — Campay refund + transfer fire
+
+- **`[7.4]`** Campay outbound transfer worker — drains `VendorPayout` / `RiderPayout` rows in `PENDING` status, fires the actual Campay transfer, flips to `IN_FLIGHT` and then `PAID` on webhook. Until this lands, payout rows are computed correctly but admin must fire transfers manually in the Campay UI.
+- **`[7.1f]` / `[#90]`** Campay refund API integration — drains the refund queue automatically. Today the queue is a manual ops worklist.
+- **`[7.3c]` / [chopnow-api#213](https://github.com/ChopNow-app/chopnow-api/issues/213)** Stuck-PICKED_UP detection + rider-fraud resolution flow. Detection cron flags orders stuck > 2h; admin "resolve" endpoint handles consumer refund + vendor compensation ADJUSTMENT + rider suspension/score in one transaction. Ships alongside 7.1f because fraud detection without refund machinery is half a feature.
+- **`[#85]`** Failed payout retry + ops escalation.
+- **`[#88]`** Webhook idempotency hardening (Campay refund leg).
+
+### Documentation
+
+- ✅ ADR-0005 (this document) — captures the policy + ledger model.
+- ✅ `docs/vendor/pre-orders.md` — updated to describe the ledger pairing (S1).
+- 📋 `docs/finance/` section (`ledger.md`, `payouts.md`, `commission.md`) — defer to S3 when the picture is operationally complete.
