@@ -250,16 +250,27 @@ Frontend (chopnow-app):
 
 - **`[7.3b]`** Admin financial dashboard at `/admin/finance` — four tabs (cashout requests, vendor balances, rider balances, refund queue). Inline approve/reject on the cashout queue with trust badges. ([chopnow-app#138](https://github.com/ChopNow-app/chopnow-app/pull/138))
 
-### Remaining for S3 — Campay refund + transfer fire
+### ✅ S3 Campay Outbound + Reconciliation — shipped 2026-05-21
 
-- **`[7.4]`** Campay outbound transfer worker — drains `VendorPayout` / `RiderPayout` rows in `PENDING` status, fires the actual Campay transfer, flips to `IN_FLIGHT` and then `PAID` on webhook. Until this lands, payout rows are computed correctly but admin must fire transfers manually in the Campay UI.
-- **`[7.1f]` / `[#90]`** Campay refund API integration — drains the refund queue automatically. Today the queue is a manual ops worklist.
-- **`[7.3c]` / [chopnow-api#213](https://github.com/ChopNow-app/chopnow-api/issues/213)** Stuck-PICKED_UP detection + rider-fraud resolution flow. Detection cron flags orders stuck > 2h; admin "resolve" endpoint handles consumer refund + vendor compensation ADJUSTMENT + rider suspension/score in one transaction. Ships alongside 7.1f because fraud detection without refund machinery is half a feature.
-- **`[#85]`** Failed payout retry + ops escalation.
-- **`[#88]`** Webhook idempotency hardening (Campay refund leg).
+After S3, the platform handles every Campay state autonomously and surfaces every failure to admin for one-tap remediation. The only pre-launch blocker that remains is RCCM + NIU + Campay Go-Live ([chopnow-api#181](https://github.com/ChopNow-app/chopnow-api/issues/181)) — engineering is complete.
+
+- **`[7.4-worker]`** Campay outbound transfer worker — `@Cron(EVERY_5_MINUTES)` drains `VendorPayout` / `RiderPayout` PENDING rows. Status-guarded `PENDING → IN_FLIGHT`, calls Campay `/withdraw/`, persists `campayRef`. Webhook handler at `POST /webhooks/campay/transfer` flips `IN_FLIGHT → PAID`. Manual-mode env flag (`CAMPAY_TRANSFERS_ENABLED=false` default) keeps the worker dormant until Campay Go-Live + RCCM lands. ([chopnow-api#217](https://github.com/ChopNow-app/chopnow-api/pull/217))
+- **`[7.8]`** Webhook idempotency hardening — new `CampayWebhookEvent` dedup table with `unique(eventType, reference)`. INSERT-first pattern; Prisma `P2002` becomes `isFirst: false`. Wired into both `COLLECT` and `TRANSFER` webhooks. Survives process restarts + multi-instance replicas. ([chopnow-api#218](https://github.com/ChopNow-app/chopnow-api/pull/218))
+- **`[7.10]`** Campay refund flow — `RefundProcessor` cron drains Orders in `REFUND_PENDING`, calls `CampayService.initiateRefund` (outbound to consumer's MoMo), writes paired `CUSTOMER_ESCROW + / REFUND_PAYABLE −` ledger entries on initiation. Webhook at `POST /webhooks/campay/refund` flips `REFUND_PENDING → REFUNDED` and writes the settle pair `REFUND_PAYABLE + / CAMPAY_FLOAT −`. ([chopnow-api#219](https://github.com/ChopNow-app/chopnow-api/pull/219))
+- **`[7.3c]`** Stuck-PICKED_UP detection + admin rider-fraud resolution — `@Cron(EVERY_30_MINUTES)` flags Orders stuck in PICKED_UP > 2h. `POST /admin/orders/:id/resolve-rider-fraud` atomically queues a consumer refund (REFUND_PENDING — drained by 7.10), writes a vendor-compensation `ADJUSTMENT` ledger entry (`PLATFORM_REVENUE + / VENDOR_PAYABLE −`), and either SUSPENDS the rider (JWT revoke) or WARNS them (reliabilityScore decrement). ([chopnow-api#220](https://github.com/ChopNow-app/chopnow-api/pull/220))
+- **`[7.5]`** Failed payout escalation + admin remediation — `PayoutEscalation` cron picks FAILED + stale IN_FLIGHT payouts and stuck refunds. `GET /admin/finance/escalations` lists them oldest-first. Admin endpoints: `POST /admin/finance/vendor-payouts/:id/retry` (flip FAILED → PENDING) and `POST /admin/finance/vendor-payouts/:id/manual-mark-paid` (capture admin-fired Campay reference). Rider equivalents shipped in the same PR. ([chopnow-api#221](https://github.com/ChopNow-app/chopnow-api/pull/221))
+- **`[7.9]`** Campay balance pre-check — `CampayService.getBalance()` with 60s cache. `PayoutTransferWorker` fetches once per tick, tracks remaining float as it initiates transfers, refuses any payout that would push remaining negative. Prevents bounced transactions. ([chopnow-api#222](https://github.com/ChopNow-app/chopnow-api/pull/222))
+- **`[7.12]`** Campay circuit breaker (mode dégradé) — 5 consecutive failures across any Campay method opens the circuit. While OPEN, every wrapped call (`initiateCollect`, `initiateTransfer`, `initiateRefund`, `getBalance`) throws `campay_circuit_open` immediately for 60s. Next call auto-promotes to HALF_OPEN; probe outcome decides recovery. `GET /admin/finance/campay-circuit` exposes state. ([chopnow-api#223](https://github.com/ChopNow-app/chopnow-api/pull/223))
 
 ### Documentation
 
 - ✅ ADR-0005 (this document) — captures the policy + ledger model.
 - ✅ `docs/vendor/pre-orders.md` — updated to describe the ledger pairing (S1).
-- 📋 `docs/finance/` section (`ledger.md`, `payouts.md`, `commission.md`) — defer to S3 when the picture is operationally complete.
+- 📋 `docs/finance/` section (`ledger.md`, `payouts.md`, `commission.md`) — defer until post-launch when there's real production traffic to write about.
+
+### What's actually left before launch
+
+Engineering: nothing finance-related. Pre-launch blockers stay regulatory:
+
+- **RCCM + NIU registration** (TchopNow legal entity) — chopnow-api [#181](https://github.com/ChopNow-app/chopnow-api/issues/181).
+- **Campay Go-Live application** — requires the RCCM + NIU above + production credentials. Until that lands, the manual-mode env flags (`CAMPAY_TRANSFERS_ENABLED`, `CAMPAY_REFUNDS_ENABLED`) keep the auto-fire workers dormant. The founder fires transfers + refunds manually in the Campay UI and uses the admin manual-mark-paid endpoint to capture each Campay reference into the bookkeeping.
