@@ -7,4 +7,4 @@
 #
 # CI installs the same file (see .github/workflows/deploy-pages.yml).
 
-mkdocs-material>=9.5,<10
+mkdocs-material>=9.7.6,<10
