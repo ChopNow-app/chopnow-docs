@@ -1,0 +1,5 @@
+# Default owner for everything in chopnow-docs.
+# When a 2nd writer joins, add them on the right-hand side here AND
+# enable "Require review from Code Owners" in main branch protection.
+# Until then this file just sets the muscle memory.
+* @AndreLiar
