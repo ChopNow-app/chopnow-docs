@@ -299,6 +299,15 @@ condition in its issue body:
 | [chopnow-api#278](https://github.com/ChopNow-app/chopnow-api/issues/278) | Continuous profiling via Pyroscope | After tracing lands |
 | [chopnow-api#279](https://github.com/ChopNow-app/chopnow-api/issues/279) | Alert routing beyond email (Slack / Discord / WhatsApp) | After alert rules; before team > 1 |
 
+### Adjacent backlog
+
+Infrastructure-scale-up items that aren't strictly observability but live
+in the same "what we don't need yet, but should remember" bucket:
+
+| Issue | Item | Revisit when |
+| --- | --- | --- |
+| [chopnow-api#280](https://github.com/ChopNow-app/chopnow-api/issues/280) | Postgres `tsvector` + `pg_trgm` for catalogue search (deferred Elasticsearch evaluation) | Vendor count > 50, item count > 500, or search-driven discovery overtakes category browse |
+
 ## Related docs
 
 - [Infrastructure overview](infrastructure.md) — droplet layout, Caddy, R2
