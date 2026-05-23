@@ -1,0 +1,457 @@
+/* ChopNow brand overrides for MkDocs Material 9.x
+ *
+ * Brand palette — Sugar Art Palier 4 (locked 2026-05-12):
+ *   Chop Red   #E11D2A   one dominant CTA per surface
+ *   Ink        #0F0F0F   primary text, dark surfaces
+ *   Warm White #FAFAF7   page background
+ *   Mboué      #1A5C3A   success only
+ *   Danger     #D93025   errors only
+ *   Neutral    #9A9A95   placeholders, timestamps
+ *
+ * Typography — Plus Jakarta Sans (already loaded by theme.font.text).
+ * Spec: 700 hero/-0.02em · 600 ui labels · 400-500 body.
+ */
+
+:root {
+  --chop-red: #e11d2a;
+  --chop-red-dark: #b8121e;
+  --chop-ink: #0f0f0f;
+  --chop-warm: #fafaf7;
+  --chop-mboue: #1a5c3a;
+  --chop-danger: #d93025;
+  --chop-neutral: #9a9a95;
+}
+
+/* --- Material primary / accent — replaces deep orange ------------------- */
+
+[data-md-color-scheme='default'] {
+  --md-primary-fg-color: var(--chop-ink);
+  --md-primary-fg-color--light: #1f1f1f;
+  --md-primary-fg-color--dark: #000;
+  --md-primary-bg-color: var(--chop-warm);
+  --md-primary-bg-color--light: rgba(250, 250, 247, 0.7);
+
+  --md-accent-fg-color: var(--chop-red);
+  --md-accent-fg-color--transparent: rgba(225, 29, 42, 0.1);
+  --md-accent-bg-color: var(--chop-warm);
+
+  --md-default-bg-color: var(--chop-warm);
+  --md-typeset-a-color: var(--chop-red);
+}
+
+[data-md-color-scheme='slate'] {
+  --md-primary-fg-color: #050505;
+  --md-primary-fg-color--light: #1a1a1a;
+  --md-primary-fg-color--dark: #000;
+  --md-primary-bg-color: #ededed;
+
+  --md-accent-fg-color: var(--chop-red);
+  --md-accent-fg-color--transparent: rgba(225, 29, 42, 0.18);
+
+  --md-default-bg-color: #0a0a0a;
+  --md-typeset-a-color: #ff5a64;
+}
+
+/* --- Typography refinement --------------------------------------------- */
+
+.md-typeset h1 {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--chop-ink);
+}
+
+[data-md-color-scheme='slate'] .md-typeset h1 {
+  color: #fff;
+}
+
+.md-typeset h2 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 2.4rem;
+}
+
+.md-typeset h3,
+.md-typeset h4 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.md-header__title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.md-nav__title {
+  font-weight: 600;
+}
+
+/* Tighter body line-length for readability */
+.md-typeset {
+  font-feature-settings: 'ss01', 'ss02';
+}
+
+/* --- Header & search --------------------------------------------------- */
+
+.md-header {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.md-search__form {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 0.4rem;
+}
+
+.md-search__form:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* --- Cards on the landing page ----------------------------------------- */
+/* Material 9.5+ ships grid-card CSS out of the box, but we declare our own
+ * here so the layout works on 9.4 too (and so we control the visual). */
+
+.md-typeset .grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  margin: 1.2em 0;
+}
+
+.md-typeset .grid.cards > ul {
+  display: contents;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.md-typeset .grid.cards > ul > li {
+  display: block;
+  margin: 0;
+  padding: 1rem 1.1rem;
+  background: var(--md-default-bg-color);
+  border: 1px solid rgba(15, 15, 15, 0.08);
+  border-radius: 12px;
+  transition: border-color 160ms ease, transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.md-typeset .grid.cards > ul > li::before,
+.md-typeset .grid.cards > ul > li::marker {
+  display: none;
+  content: none;
+}
+
+.md-typeset .grid.cards > ul > li > hr {
+  margin: 0.5rem 0;
+  border: 0;
+  border-top: 1px solid rgba(15, 15, 15, 0.08);
+}
+
+[data-md-color-scheme='slate'] .md-typeset .grid.cards > ul > li > hr {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.md-typeset .grid > .card {
+  border: 1px solid rgba(15, 15, 15, 0.08);
+  border-radius: 12px;
+  transition: border-color 160ms ease, transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+[data-md-color-scheme='slate'] .md-typeset .grid.cards > ul > li,
+[data-md-color-scheme='slate'] .md-typeset .grid > .card {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.md-typeset .grid.cards > ul > li:hover,
+.md-typeset .grid > .card:hover {
+  border-color: var(--chop-red);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -16px rgba(225, 29, 42, 0.4);
+}
+
+/* --- Hero band on docs/index.md ---------------------------------------- */
+
+.chop-hero {
+  position: relative;
+  margin: -1.5rem -1.5rem 2rem -1.5rem;
+  padding: 4rem 2rem 3.5rem;
+  background: var(--chop-ink);
+  color: #fff;
+  border-radius: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.chop-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../assets/pattern.svg');
+  background-size: 96px 96px;
+  background-repeat: repeat;
+  opacity: 0.06;
+  z-index: -1;
+}
+
+.chop-hero::after {
+  content: '';
+  position: absolute;
+  right: -120px;
+  top: -120px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(
+    circle,
+    rgba(225, 29, 42, 0.35) 0%,
+    rgba(225, 29, 42, 0) 70%
+  );
+  z-index: -1;
+}
+
+.chop-hero__eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--chop-red);
+  margin-bottom: 0.9rem;
+}
+
+/* Specificity boost: outranks `.md-typeset h1` which sets color: var(--chop-ink). */
+.md-typeset .chop-hero__title,
+.chop-hero .chop-hero__title {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin: 0 0 0.8rem;
+  color: #fff;
+}
+
+/* Material auto-appends a headerlink anchor to every heading; hide inside hero. */
+.chop-hero__title .headerlink {
+  display: none;
+}
+
+.chop-hero__lede {
+  max-width: 38rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0 0 1.6rem;
+}
+
+.chop-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.chop-hero__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.chop-hero__meta span::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--chop-red);
+  display: inline-block;
+}
+
+/* Inside the hero band the wrapper width should fall back to MkDocs default */
+.chop-hero > * {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- Admonitions: red accent for note/warning ------------------------- */
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 8px;
+  border-left-width: 3px;
+}
+
+/* --- Tables: tighter, no zebra ---------------------------------------- */
+
+.md-typeset table:not([class]) {
+  font-size: 0.78rem;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.md-typeset table:not([class]) th {
+  background: rgba(15, 15, 15, 0.04);
+  color: var(--chop-ink);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  border-bottom: 2px solid var(--chop-ink);
+}
+
+/* Hide the header row entirely when every cell is empty (key-value tables
+ * like the "Project at a glance" block use `| | |` placeholders). */
+.md-typeset table:not([class]) thead:has(th:empty:only-of-type),
+.md-typeset table:not([class]) thead tr:has(th:empty + th:empty:last-child) {
+  display: none;
+}
+
+[data-md-color-scheme='slate'] .md-typeset table:not([class]) th {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Mermaid diagrams: brand-themed ----------------------------------- */
+/* Material applies the palette via CSS vars on the mermaid container. */
+
+.mermaid {
+  background: transparent;
+}
+
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node polygon,
+.mermaid .node path {
+  fill: var(--chop-warm) !important;
+  stroke: var(--chop-ink) !important;
+  stroke-width: 1.5px !important;
+}
+
+.mermaid .cluster rect {
+  fill: rgba(15, 15, 15, 0.04) !important;
+  stroke: rgba(15, 15, 15, 0.2) !important;
+  stroke-dasharray: 4 3 !important;
+}
+
+.mermaid .edgePath .path {
+  stroke: var(--chop-red) !important;
+  stroke-width: 1.6px !important;
+}
+
+.mermaid .edgeLabel {
+  background: var(--chop-warm) !important;
+  color: var(--chop-ink) !important;
+  font-weight: 500;
+}
+
+.mermaid .nodeLabel,
+.mermaid .cluster-label {
+  color: var(--chop-ink) !important;
+  font-weight: 600;
+}
+
+[data-md-color-scheme='slate'] .mermaid .node rect,
+[data-md-color-scheme='slate'] .mermaid .node circle,
+[data-md-color-scheme='slate'] .mermaid .node polygon,
+[data-md-color-scheme='slate'] .mermaid .node path {
+  fill: #1a1a1a !important;
+  stroke: #ededed !important;
+}
+
+[data-md-color-scheme='slate'] .mermaid .cluster rect {
+  fill: rgba(255, 255, 255, 0.03) !important;
+  stroke: rgba(255, 255, 255, 0.16) !important;
+}
+
+[data-md-color-scheme='slate'] .mermaid .edgeLabel {
+  background: #0a0a0a !important;
+  color: #ededed !important;
+}
+
+[data-md-color-scheme='slate'] .mermaid .nodeLabel,
+[data-md-color-scheme='slate'] .mermaid .cluster-label {
+  color: #ededed !important;
+}
+
+/* --- Mermaid sequence diagrams --- */
+
+.mermaid .actor {
+  fill: var(--chop-warm) !important;
+  stroke: var(--chop-ink) !important;
+  stroke-width: 1.5px !important;
+}
+
+.mermaid text.actor > tspan {
+  fill: var(--chop-ink) !important;
+  font-weight: 600 !important;
+}
+
+.mermaid line.actor-line {
+  stroke: rgba(15, 15, 15, 0.2) !important;
+}
+
+.mermaid .messageLine0,
+.mermaid .messageLine1 {
+  stroke: var(--chop-red) !important;
+  stroke-width: 1.5px !important;
+}
+
+.mermaid .messageText {
+  fill: var(--chop-ink) !important;
+  font-weight: 500 !important;
+}
+
+.mermaid .labelBox {
+  fill: var(--chop-warm) !important;
+  stroke: var(--chop-ink) !important;
+}
+
+.mermaid .labelText,
+.mermaid .labelText > tspan,
+.mermaid .loopText > tspan,
+.mermaid .noteText > tspan {
+  fill: var(--chop-ink) !important;
+}
+
+.mermaid .note {
+  fill: rgba(225, 29, 42, 0.06) !important;
+  stroke: var(--chop-red) !important;
+}
+
+[data-md-color-scheme='slate'] .mermaid .actor {
+  fill: #1a1a1a !important;
+  stroke: #ededed !important;
+}
+
+[data-md-color-scheme='slate'] .mermaid text.actor > tspan,
+[data-md-color-scheme='slate'] .mermaid .messageText,
+[data-md-color-scheme='slate'] .mermaid .labelText > tspan,
+[data-md-color-scheme='slate'] .mermaid .loopText > tspan,
+[data-md-color-scheme='slate'] .mermaid .noteText > tspan {
+  fill: #ededed !important;
+}
+
+[data-md-color-scheme='slate'] .mermaid line.actor-line {
+  stroke: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-md-color-scheme='slate'] .mermaid .labelBox {
+  fill: #1a1a1a !important;
+  stroke: #ededed !important;
+}
+
+/* --- Logo size in header --------------------------------------------- */
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.6rem;
+  width: auto;
+}
+
+/* --- Footer: subtle ink ---------------------------------------------- */
+
+.md-footer-meta {
+  background: var(--chop-ink);
+}

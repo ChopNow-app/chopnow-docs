@@ -8,31 +8,38 @@ edit_uri: edit/main/docs/
 theme:
   name: material
   language: en
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
   features:
     - navigation.instant       # SPA-style page loads
     - navigation.tracking      # update URL on scroll
     - navigation.tabs          # top-level sections as tabs
+    - navigation.tabs.sticky   # keep tabs visible while scrolling
     - navigation.sections      # sub-sections in the sidebar
     - navigation.indexes       # section landing pages
     - navigation.top           # back-to-top button
+    - toc.follow               # ToC follows reading position
     - search.suggest
     - search.highlight
     - search.share
     - content.code.copy        # copy-button on every code block
     - content.action.edit      # "edit on GitHub" link per page
     - content.tabs.link        # tab choices persist across pages
+  # Palette uses scheme `custom` + overrides in stylesheets/chopnow.css to
+  # carry Sugar Art Palier 4 colors (rouge/noir/blanc) rather than Material's
+  # default named palettes (which only ship pre-mixed hues).
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: deep orange
-      accent: deep orange
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: deep orange
-      accent: deep orange
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
@@ -41,6 +48,9 @@ theme:
     code: JetBrains Mono
   icon:
     repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/chopnow.css
 
 markdown_extensions:
   - admonition                # note/warning/tip boxes
@@ -58,6 +68,12 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  # Material icon + emoji shortcodes — required for `:material-rocket-launch:`
+  # syntax used by the grid cards on the landing page and inline icons across
+  # the docs. Without this, those tokens render as literal text.
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
