@@ -105,6 +105,7 @@ nav:
     - Data model: architecture/data-model.md
     - Security: architecture/security.md
     - Observability: architecture/observability.md
+    - API lifecycle: architecture/api-lifecycle.md
   - Vendor surface:
     - vendor/index.md
     - Onboarding & KYC: vendor/onboarding.md
