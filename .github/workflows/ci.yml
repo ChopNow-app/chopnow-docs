@@ -1,0 +1,45 @@
+# PR + push validation for chopnow-docs.
+#
+# What this catches BEFORE merging to main (where deploy-pages.yml fires):
+#   - Broken Markdown that mkdocs parses but renders wrong
+#   - Dead internal links (mkdocs --strict treats them as errors)
+#   - Broken Mermaid frontmatter or unknown fence
+#   - Missing nav targets (file deleted but still in mkdocs.yml nav)
+#
+# `mkdocs build --strict` exits non-zero on warnings — same gate the
+# Pages deploy uses, so catching it here means we never publish a
+# broken docs site.
+#
+# Runs on push to ANY branch except main (main publishes via
+# deploy-pages.yml, no reason to double-check) and on every PR.
+
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  mkdocs-strict:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install MkDocs Material toolchain
+        run: pip install -r requirements.txt
+
+      - name: Build docs (strict — warnings fail the build)
+        run: mkdocs build --strict
