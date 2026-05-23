@@ -1,8 +1,15 @@
-# ChopNow Docs
-
-Food delivery PWA for Douala, Cameroon. Soft launch July 2026.
-
-This site collects everything someone joining the project needs to be productive — system design, stack decisions, runbooks, and onboarding guides. **Always Markdown, always edited via PR.**
+<div class="chop-hero" markdown>
+  <span class="chop-hero__eyebrow">ChopNow · Engineering documentation</span>
+  <h1 class="chop-hero__title">Mange sans attendre.</h1>
+  <p class="chop-hero__lede">
+    The engineering source of truth for ChopNow — a food-delivery PWA built for Douala. Architecture, decisions, runbooks, and onboarding, all in Markdown, all edited via PR.
+  </p>
+  <div class="chop-hero__meta">
+    <span>Douala · Cameroon</span>
+    <span>Next.js · NestJS · PostGIS</span>
+    <span>Pilot launching 2026</span>
+  </div>
+</div>
 
 ## Quick links
 
@@ -20,7 +27,7 @@ This site collects everything someone joining the project needs to be productive
 
     [Architecture overview](architecture/overview.md) → [stack rationale](architecture/stack.md) → [infrastructure](architecture/infrastructure.md).
 
--   :material-decision:{ .lg .middle } **Why did we choose X?**
+-   :material-scale-balance:{ .lg .middle } **Why did we choose X?**
 
     ---
 

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <!--
+    CHOPNOW SIGNATURE PATTERN — "THE STEAM WAVE"
+    ─────────────────────────────────────────────────────────────
+    The C arc repeated in a staggered grid.
+    Abstract enough to be modern.
+    Rooted enough to be ours.
+
+    Usage:
+    — Dark sections: stroke="#E8570A" opacity="0.06"
+    — Light sections: stroke="#0F0F0F" opacity="0.04"
+    — As CSS data URI: see globals.css --pattern-steam variable
+    — Scale from 24px (subtle texture) to 96px (bold pattern)
+
+    NOT kente. NOT generic African.
+    THIS is the TchopNow visual language.
+    ─────────────────────────────────────────────────────────────
+  -->
+  <defs>
+    <pattern id="steam-wave" width="96" height="96" patternUnits="userSpaceOnUse">
+      <!-- Row 1: 2 C arcs staggered -->
+      <!-- C arc at tile scale: center (24,20), r=13.5, gap 80° right -->
+      <!-- top: 24+13.5*cos(-40°)=34.3, 20-13.5*sin(40°)=11.3 -->
+      <!-- bot: 34.3, 20+13.5*sin(40°)=28.7 -->
+      <path d="M 34.3,11.3 A 13.5,13.5 0 1 0 34.3,28.7"
+            stroke="#E8570A" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.12"/>
+
+      <!-- C arc offset: center (72,20) -->
+      <path d="M 82.3,11.3 A 13.5,13.5 0 1 0 82.3,28.7"
+            stroke="#E8570A" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.12"/>
+
+      <!-- Row 2: offset by 48px horizontally, 48px vertically -->
+      <!-- C arc at center (48,68) -->
+      <path d="M 58.3,59.3 A 13.5,13.5 0 1 0 58.3,76.7"
+            stroke="#E8570A" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.12"/>
+    </pattern>
+  </defs>
+
+  <!-- Pattern preview (96x96 tile) -->
+  <rect width="96" height="96" fill="#0F0F0F" rx="8"/>
+  <rect width="96" height="96" fill="url(#steam-wave)" rx="8"/>
+
+  <!-- Usage label -->
+  <text x="48" y="92" text-anchor="middle"
+        font-family="Inter, system-ui" font-size="6" fill="white" opacity="0.3">96×96 tile</text>
+</svg>

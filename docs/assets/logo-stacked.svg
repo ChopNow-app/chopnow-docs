@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 310" width="260" height="310">
+  <!--
+    STACKED LOCKUP — TCHOPNOW
+    ════════════════════════════════════════════════════
+    Icon   → centered top, 120×120
+    CHOP.  → centered below, full weight, ink
+    NOW.   → centered below, full weight, orange
+    CM     → raised tag after NOW., half size
+
+    All three elements share one vertical axis.
+    ════════════════════════════════════════════════════
+    Icon geometry: 512px master × 0.234 scale
+    Pin center (60, 45.5) r=32.8 | Tip (60, 101.2)
+    Bowl center (60, 45.5) r=15.0 | stroke 9.4
+    Bowl gap top (71.5, 35.8) | bottom (71.5, 55.1)
+  -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&amp;display=swap');
+    </style>
+    <radialGradient id="heat-s" cx="38%" cy="32%" r="70%">
+      <stop offset="0%"   stop-color="#FF6520"/>
+      <stop offset="55%"  stop-color="#E8570A"/>
+      <stop offset="100%" stop-color="#C04008"/>
+    </radialGradient>
+    <radialGradient id="warmth-s" cx="59.5%" cy="37.9%" r="35%">
+      <stop offset="0%"   stop-color="#FF8040" stop-opacity="0.22"/>
+      <stop offset="55%"  stop-color="#E8570A" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="#E8570A" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="bloom-s" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Icon 120×120 — centered in 260px → translate(70, 10) -->
+  <g transform="translate(70, 10)">
+    <rect width="120" height="120" rx="27" fill="url(#heat-s)"/>
+
+    <!-- White GPS pin (512px × 0.234) -->
+    <path d="M 60,101.2
+             C 49.2,87.1 27.2,72.2 27.2,45.5
+             A 32.8,32.8 0 0 0 92.8,45.5
+             C 92.8,72.2 70.8,87.1 60,101.2 Z"
+          fill="white"/>
+
+    <!-- Inner warmth -->
+    <circle cx="60" cy="45.5" r="22.5" fill="url(#warmth-s)"/>
+
+    <!-- Bowl — black on white, maximum contrast -->
+    <path d="M 71.5,35.8 A 15.0,15.0 0 1 0 71.5,55.1"
+          stroke="#0F0F0F" stroke-width="9.4"
+          stroke-linecap="round" fill="none"/>
+
+    <!-- Steam wisps -->
+    <path d="M 70.3,35.2 C 65.6,29.5 71.9,25.8 68.0,20.2"
+          stroke="rgba(232,87,10,0.62)" stroke-width="2.1"
+          stroke-linecap="round" fill="none"/>
+    <path d="M 73.3,34.2 C 78.3,28.6 69.8,24.8 74.5,18.8"
+          stroke="rgba(232,87,10,0.40)" stroke-width="1.9"
+          stroke-linecap="round" fill="none"/>
+    <path d="M 76.2,35.8 C 82.5,29.5 74.1,25.3 79.7,17.8"
+          stroke="rgba(232,87,10,0.22)" stroke-width="1.6"
+          stroke-linecap="round" fill="none"/>
+
+    <!-- Specular highlight -->
+    <path d="M 32.8,42.6 A 27.2,27.2 0 0 1 87.2,42.6"
+          stroke="rgba(255,255,255,0.22)" stroke-width="0.8"
+          fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- CHOP. — centered, full weight, ink -->
+  <text
+    x="130" y="210"
+    text-anchor="middle"
+    font-family="'Plus Jakarta Sans', 'Inter', system-ui, sans-serif"
+    font-size="76" font-weight="800" letter-spacing="-3"
+    fill="#0F0F0F">CHOP.</text>
+
+  <!-- NOW. — centered, full weight, orange — CM raised tag -->
+  <text
+    x="130" y="298"
+    text-anchor="middle"
+    font-family="'Plus Jakarta Sans', 'Inter', system-ui, sans-serif"
+    font-size="76" font-weight="800" letter-spacing="-3">
+    <tspan fill="#E8570A">NOW.</tspan><tspan fill="#E8570A" font-size="38" dy="-22" letter-spacing="-1">CM</tspan>
+  </text>
+</svg>

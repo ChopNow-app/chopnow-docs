@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!--
+    CHOPNOW ICON — PREMIUM ORANGE v4
+    ══════════════════════════════════════════════════════════
+    Improvements over v3:
+
+    1. OPTICAL BALANCE — pin moved up 16px.
+       Visual center of the pin was pulling eye downward.
+       Now: circle center (256,194), tip (256,432).
+       Pin sits at optical middle of the square, not mathematical.
+
+    2. INNER WARMTH — subtle orange radial glow inside the
+       white pin, centered on the bowl. 8% opacity max.
+       The pin feels like it contains heat, not cold plastic.
+
+    3. SHARPER TIP — tighter bezier control points at the
+       pin base. The tip is a delivery point, not a bubble.
+
+    4. GRADIENT bg — alive, not flat.
+       Hot center (#FF6520) → deep edge (#C04008).
+
+    Geometry:
+      Pin circle: center (256, 194), r=140
+      Pin tip:    (256, 432)
+      Left:       (116, 194) | Right: (396, 194)
+      Bowl C:     center (256,194), r=64, stroke=40, gap 80° right
+        Top: (305,153) | Bottom: (305,235)
+    ══════════════════════════════════════════════════════════
+  -->
+  <defs>
+    <!-- 1. Warm radial bg gradient -->
+    <radialGradient id="heat" cx="38%" cy="32%" r="70%">
+      <stop offset="0%"   stop-color="#FF6520"/>
+      <stop offset="55%"  stop-color="#E8570A"/>
+      <stop offset="100%" stop-color="#C04008"/>
+    </radialGradient>
+    <!-- 2. Inner warmth — orange breathes through white pin -->
+    <radialGradient id="warmth" cx="59.5%" cy="37.9%" r="35%">
+      <stop offset="0%"   stop-color="#FF8040" stop-opacity="0.22"/>
+      <stop offset="55%"  stop-color="#E8570A" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="#E8570A" stop-opacity="0"/>
+    </radialGradient>
+    <!-- 3. Bowl bloom — warm glow radiating from the C arc -->
+    <filter id="bowl-bloom" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="url(#heat)"/>
+
+  <!-- White GPS pin — optically balanced, sharper tip -->
+  <path d="M 256,432
+           C 210,372 116,308 116,194
+           A 140,140 0 0 0 396,194
+           C 396,308 302,372 256,432
+           Z"
+        fill="white"/>
+
+  <!-- Inner warmth — the bowl radiates through the pin -->
+  <circle cx="256" cy="194" r="96" fill="url(#warmth)"/>
+
+  <!-- Orange C bowl — food, the reason everything exists -->
+  <!-- Bowl — black on white, maximum contrast -->
+  <path d="M 305,153 A 64,64 0 1 0 305,235"
+        stroke="#0F0F0F" stroke-width="62"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- Three S-curve steam wisps — brand signature, rising from bowl opening -->
+  <!-- Wisp 1: leftward S, most opaque, anchored at bowl top -->
+  <path d="M 300,150 C 280,126 307,110 290,86"
+        stroke="rgba(232,87,10,0.62)" stroke-width="9"
+        stroke-linecap="round" fill="none"/>
+  <!-- Wisp 2: rightward S, medium -->
+  <path d="M 313,146 C 334,122 298,106 318,80"
+        stroke="rgba(232,87,10,0.40)" stroke-width="8"
+        stroke-linecap="round" fill="none"/>
+  <!-- Wisp 3: wide rightward S, most transparent -->
+  <path d="M 325,153 C 352,126 316,108 340,76"
+        stroke="rgba(232,87,10,0.22)" stroke-width="7"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- Specular highlight — light source top-left, glass depth -->
+  <path d="M 140,182 A 116,116 0 0 1 372,182"
+        stroke="rgba(255,255,255,0.22)"
+        stroke-width="3"
+        fill="none"
+        stroke-linecap="round"/>
+</svg>
