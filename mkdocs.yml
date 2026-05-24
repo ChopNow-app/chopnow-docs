@@ -106,6 +106,7 @@ nav:
     - Security: architecture/security.md
     - Observability: architecture/observability.md
     - API lifecycle: architecture/api-lifecycle.md
+    - Mobile-first design principles: architecture/mobile-first-principles.md
   - Vendor surface:
     - vendor/index.md
     - Onboarding & KYC: vendor/onboarding.md
