@@ -4,9 +4,12 @@ External polling of public surfaces, so a real-world outage is
 detected by us before a pilot user has to WhatsApp the founder.
 
 !!! info "Status — 2026-05-24"
-    UptimeRobot free tier. 4 monitors at 5-minute interval. Email
-    alerts to the founder; WhatsApp escalation deferred (see "future
-    work" below).
+    UptimeRobot free tier. **3 monitors live** (api `/health` + api
+    `/ready` + consumer PWA with keyword check), 5-minute interval,
+    email alerts to the founder. The docs-site monitor is documented
+    in the table below but deliberately not deployed — a docs outage
+    doesn't hurt users, so it's not worth the dashboard noise.
+    WhatsApp escalation deferred (see "future work" below).
 
 ## Why external monitoring
 
@@ -23,7 +26,7 @@ party catches the failure modes that matter to a user.
 | **API liveness** | `https://api-staging.tchopnow.app/health` | 5 min | HTTP 200 | Cheapest signal — process is alive + Caddy is forwarding |
 | **API readiness** | `https://api-staging.tchopnow.app/ready` | 5 min | HTTP 200 | Adds Postgres + Redis health to the above (deep probe) |
 | **Consumer PWA** | `https://app.tchopnow.app` | 5 min | HTTP 200, contains `TChopNow` | Catches Vercel routing / alias breakage |
-| **Docs site** | `https://chopnow-app.github.io/chopnow-docs/` | 30 min | HTTP 200 | Lowest priority — Pages outage doesn't hurt users |
+| **Docs site** *(not deployed)* | `https://chopnow-app.github.io/chopnow-docs/` | 30 min | HTTP 200 | Lowest priority — Pages outage doesn't hurt users; add later if Pages becomes load-bearing for partners |
 
 ## Provider — UptimeRobot (free tier)
 
