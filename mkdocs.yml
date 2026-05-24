@@ -131,6 +131,7 @@ nav:
     - Rollback: runbooks/rollback.md
     - Re-join Twilio sandbox: runbooks/twilio-sandbox-rejoin.md
     - Rotate DO API token: runbooks/rotate-do-token.md
+    - External uptime monitoring: runbooks/uptime-monitoring.md
   - Reference:
     - Repositories: reference/repositories.md
     - Environments: reference/environments.md
